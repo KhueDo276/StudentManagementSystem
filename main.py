@@ -55,7 +55,8 @@ def isOlder(date1, date2):
 dct = {}
 
 # open StudentMajorsList.csv and get their information
-majors_file = open('/Users/khuedo/PycharmProjects/pythonProject18/StudentsMajorsList.csv')
+majors_file_name = input("Enter the major's file name:\n")
+majors_file = open(majors_file_name)
 lastName_list = []  # store last name in the list
 majors_list = []   # store majors
 ID_list = []   # store IDs
@@ -83,7 +84,8 @@ for line in majors_file:
 majors_file.close()
 
 # open GPAList.csv and get their information
-GPA_file = open('/Users/khuedo/PycharmProjects/pythonProject18/GPAList.csv')
+GPA_file_name = input("Enter GPA's file name:\n")
+GPA_file = open(GPA_file_name)
 scholarship_list = []  # store students' IDs have GPA > 3.8
 
 for line in GPA_file:
@@ -98,7 +100,8 @@ for line in GPA_file:
 GPA_file.close()
 
 # open GraduationDatesList.csv and get their information
-Graduation_file = open('/Users/khuedo/PycharmProjects/pythonProject18/GraduationDatesList.csv')
+Graduation_name = input("Enter Graduation's file name:\n")
+Graduation_file = open(Graduation_name)
 
 for line in Graduation_file:
     lst = line.split(',')
