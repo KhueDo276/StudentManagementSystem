@@ -3,29 +3,31 @@
 
 import datetime
 
+
 # create a function to check that student has graduated or not
-def haveGraduated(graduatedDate, currentDate):
-    date = graduatedDate.split('/')
+def havegraduated(graduation, currentdate):
+    date = graduation.split('/')
     month = int(date[0])
     day = int(date[1])
     year = int(date[2])
-    if year < currentDate.year - 2000:
+    if year < currentdate.year - 2000:
         return False
-    elif year > currentDate.year - 2000:
+    elif year > currentdate.year - 2000:
         return True
     else:
-        if month > currentDate.month:
+        if month > currentdate.month:
             return True
-        elif month < currentDate.month:
+        elif month < currentdate.month:
             return False
         else:
-            if day > currentDate.day:
+            if day > currentdate.day:
                 return True
             else:
                 return False
 
+
 # create a function to compare two different dates
-def isOlder(date1, date2):
+def isolder(date1, date2):
     lst1 = date1.split('/')
     month1 = int(lst1[0])
     day1 = int(lst1[1])
@@ -46,32 +48,34 @@ def isOlder(date1, date2):
         elif month1 < month2:
             return True
         else:
-            if day1 > day2 :
+            if day1 > day2:
                 return False
             else:
                 return True
 
-# create a dictionary to store the students' information as {ID: [firstName(0), lastName(1), major(2), discipline(3), GPA(4), graduationdate(5)]}
+
+# create a dictionary to store the students' information as {ID: [firstName(1), lastName(0), major(2), discipline(3),
+# GPA(4), graduationdate(5)]}
 dct = {}
 
 # open StudentMajorsList.csv and get their information
-#majors_file_name = input("Enter the major's file name:\n")
-majors_file = open('/Users/khuedo/PycharmProjects/pythonProject18/StudentsMajorsList.csv')
+majors_file_name = input("Enter the major's file name:\n")
+majors_file = open(majors_file_name)
 lastName_list = []  # store last name in the list
-majors_list = []   # store majors
-ID_list = []   # store IDs
-disciplined_list = []   # store students who have been disciplined
+majors_list = []  # store majors
+ID_list = []  # store IDs
+disciplined_list = []  # store students who have been disciplined
 
 for line in majors_file:
     lst = line.split(',')
     ID = lst[0]
     ID_list.append(ID)
     dct[ID] = []
-    # get firstName
-    dct[ID].append(lst[1])
     # get lastName
+    dct[ID].append(lst[1])
+    lastName_list.append(lst[1])
+    # get firstName
     dct[ID].append(lst[2])
-    lastName_list.append(lst[2])
     # get major
     dct[ID].append(lst[3])
     if lst[3] not in majors_list:
@@ -84,10 +88,10 @@ for line in majors_file:
 majors_file.close()
 
 # open GPAList.csv and get their information
-#GPA_file_name = input("Enter GPA's file name:\n")
-GPA_file = open('/Users/khuedo/PycharmProjects/pythonProject18/GPAList.csv')
+GPA_file_name = input("Enter GPA's file name:\n")
+GPA_file = open(GPA_file_name)
 scholarship_list = []  # store students' IDs have GPA > 3.8
-GPA_list = [] # store GPA
+GPA_list = []  # store GPA
 for line in GPA_file:
     lst = line.split(',')
     ID = lst[0]
@@ -101,8 +105,8 @@ for line in GPA_file:
 GPA_file.close()
 
 # open GraduationDatesList.csv and get their information
-#Graduation_name = input("Enter Graduation's file name:\n")
-Graduation_file = open('/Users/khuedo/PycharmProjects/pythonProject18/GraduationDatesList.csv')
+Graduation_name = input("Enter Graduation's file name:\n")
+Graduation_file = open(Graduation_name)
 
 for line in Graduation_file:
     lst = line.split(',')
@@ -112,25 +116,25 @@ for line in Graduation_file:
 
 Graduation_file.close()
 
-
 # part a
 # Sort student last name alphabetically
 lastName_list.sort()
 
-# Create FullRoster.csv to store student ID, major, first name, last name, GPA, graduation date and indicate if disciplinary action was taken
+# Create FullRoster.csv to store student ID, major, first name, last name, GPA, graduation date and indicate if
+# disciplinary action was taken
 f = open("FullRoster.csv", 'w')
 for lastname in lastName_list:
     for ID in dct.keys():
-        if dct[ID][1] == lastname:
-            f.write(str(ID)+','+dct[ID][2]+','+dct[ID][0]+','+dct[ID][1]+','+dct[ID][4]+','+dct[ID][5])
+        if dct[ID][0] == lastname:
+            f.write(
+                str(ID) + ',' + dct[ID][2] + ',' + dct[ID][1] + ',' + dct[ID][0] + ',' + dct[ID][4] + ',' + dct[ID][5])
             if dct[ID][3] != "":
-                f.write(', '+dct[ID][3])
+                f.write(', ' + dct[ID][3])
                 f.write('\n')
             else:
                 f.write('\n')
 
 f.close()
-
 
 # part b
 # Sort students' IDs
@@ -138,26 +142,25 @@ ID_list.sort()
 
 # Create major files
 for major in majors_list:
-    fileName = major.replace(" ","")
-    f = open(fileName+'.csv','w')
+    fileName = major.replace(" ", "")
+    f = open(fileName + '.csv', 'w')
     for ID in ID_list:
         if dct[ID][2] == major:
-            f.write(str(ID)+','+dct[ID][1]+','+dct[ID][0]+','+dct[ID][5])
+            f.write(str(ID) + ',' + dct[ID][0] + ',' + dct[ID][1] + ',' + dct[ID][5])
             if dct[ID][3] != "":
-                f.write(', '+dct[ID][3])
+                f.write(', ' + dct[ID][3])
                 f.write('\n')
             else:
                 f.write('\n')
     f.close()
 
-
 # part c
 currentDate = datetime.datetime.now()
 # create ScholarshipCandiates.csv file to store students who are eligible for scholarship
-f = open("ScholarshipCandiates.csv","w")
+f = open("ScholarshipCandiates.csv", "w")
 for ID in scholarship_list:
-    if haveGraduated(dct[ID][5], currentDate) and dct[ID][3] == "":
-        f.write(str(ID)+','+dct[ID][1]+','+dct[ID][0]+','+dct[ID][2]+','+dct[ID][4])
+    if havegraduated(dct[ID][5], currentDate) and dct[ID][3] == "":
+        f.write(str(ID) + ',' + dct[ID][0] + ',' + dct[ID][1] + ',' + dct[ID][2] + ',' + dct[ID][4])
         f.write('\n')
 f.close()
 
@@ -171,7 +174,7 @@ olderDate = dct[disciplined_list[0]][5]
 while len(disciplined_list) != 0:
     for i in range(len(disciplined_list)):
         currentID = disciplined_list[i]
-        if isOlder(olderDate,dct[currentID][5]) is False:
+        if isolder(olderDate, dct[currentID][5]) is False:
             olderDate = dct[currentID][5]
             currentIndex = i
     sorted_list.append(disciplined_list[currentIndex])
@@ -180,24 +183,25 @@ while len(disciplined_list) != 0:
 
 f = open("DisciplinedStudents.csv", "w")
 for ID in sorted_list:
-    f.write(str(ID)+","+dct[ID][1]+','+dct[ID][0]+','+dct[ID][5])
+    f.write(str(ID) + "," + dct[ID][0] + ',' + dct[ID][1] + ',' + dct[ID][5])
     f.write('\n')
 f.close()
 
 
 # Part 2
 # create a function to get a list of students with GPA within requested GPA
-def Eligible_student(GPA_input, num):
-    GPA_valid = []  # create a list to store GPA within num
-    for GPA in GPA_list:
-        if float(GPA) <= GPA_input + num and float(GPA) >= GPA_input - num:
-            GPA_valid.append(GPA)
+def eligible_student(gpa_input, num):
+    gpa_valid = []  # create a list to store GPA within num
+    for gpa in GPA_list:
+        if (float(gpa) <= gpa_input + num) and (float(gpa) >= gpa_input - num):
+            gpa_valid.append(gpa)
 
-    ID_valid = []  # store IDs that have GPA within num of the requested GPA
-    for ID in ID_list:
-        if dct[ID][4] in GPA_valid:
-            ID_valid.append(ID)
-    return ID_valid
+    id_valid = []  # store IDs that have GPA within 0.1 of the requested GPA
+    for id_num in ID_list:
+        if dct[id_num][4] in gpa_valid:
+            id_valid.append(id_num)
+    return id_valid
+
 
 while True:
     user_input = input("Enter major and GPA: \n")
@@ -211,36 +215,37 @@ while True:
         if major in user_input:
             have_Student = True
             break
-    if have_Student == False:
+    if not have_Student:
         print("No such student")
     else:
-        #ii. print the information of student who has GPA within 0.1 and have not graduated or did not have disciplinary action
+        # ii. print the information of student who has GPA within 0.1 and have not graduated or did not have
+        # disciplinary action
         GPA_input = float(user_input.split(' ')[-1])
-
-        for ID in Eligible_student(GPA_input, 0.1):
+        for ID in eligible_student(GPA_input, 0.1):
             # check student have not graduated or did not disciplinary action
-            if haveGraduated(dct[ID][5], currentDate) and dct[ID][3] == "":
+            if havegraduated(dct[ID][5], currentDate) and dct[ID][3] == "":
                 print("Your students:")
-                print(ID, dct[ID][0], dct[ID][1], dct[ID][4])
+                print(ID, dct[ID][1], dct[ID][0], dct[ID][4])
 
-        #iii. GPA within 0.25
-        for ID in Eligible_student(GPA_input, 0.25):
+        # iii. GPA within 0.25
+        for ID in eligible_student(GPA_input, 0.25):
             # check student have not graduated or did not disciplinary action
-            if haveGraduated(dct[ID][5], currentDate) and dct[ID][3] == "":
-                print("You may, also, consider:")
-                print(ID, dct[ID][0], dct[ID][1], dct[ID][4])
+            if ID not in eligible_student(GPA_input, 0.1):
+                if havegraduated(dct[ID][5], currentDate) and dct[ID][3] == "":
+                    print("You may, also, consider:")
+                    print(ID, dct[ID][1], dct[ID][0], dct[ID][4])
 
         # iv closest GPA to that requested
-        if Eligible_student(GPA_input, 0.1) == [] and Eligible_student(GPA_input, 0.25) == []:
+        if eligible_student(GPA_input, 0.1) == [] and eligible_student(GPA_input, 0.25) == []:
             closest_GPA = GPA_list[0]
             dif = abs(GPA_input - float(GPA_list[0]))
             for GPA in GPA_list:
                 current_dif = abs(GPA_input - float(GPA))
                 if current_dif < dif:
-                    dif = current_dif
+                    current_dif = dif
                     closest_GPA = GPA
             for ID in ID_list:
                 if dct[ID][4] == closest_GPA:
-                    if haveGraduated(dct[ID][5], currentDate) and dct[ID][3] == "":
+                    if havegraduated(dct[ID][5], currentDate) and dct[ID][3] == "":
                         print("Student in the requested major has closest GPA to the requested GPA:")
-                        print(ID, dct[ID][0], dct[ID][1], dct[ID][4])
+                        print(ID, dct[ID][1], dct[ID][0], dct[ID][4])
